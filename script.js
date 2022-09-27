@@ -1,54 +1,75 @@
-let  gameBoardElement = document.querySelector('.gameboard')
 
-
-
-
-
-
-
-
-let GameBoard = (function (){
-  array=["", "", "",
-  "", "", "",
-  "", "", ""]
-  return{array}
-})()
 
 let player = function (symbol){
   return {symbol}
-}
-
-let firstPlayer = player('x')
-let secondPlayer = player('o')
-
-
-let render = function(){     
-
- 
-  for(index in GameBoard.array){
-    boardValue=  document.createElement('div')
-    boardValue.textContent=GameBoard.array[index]
-    boardValue.classList.add(index)
-    gameBoardElement.appendChild(boardValue)
-    boardValue.addEventListener('click',function(){
-      GameBoard.array.splice(this.classList, 1, 'x')
-      controlGameState()
-      console.log(GameBoard.array)
-    })
-    console.log(boardValue)   
   }
-  return gameBoardElement
+  
+  let firstPlayer = player('x')
+  let secondPlayer = player('o')
+  
+
+const gameBoardContainer = document.querySelector('.gameboard-container')
+const gameBoardDivList = document.querySelectorAll('#gameboard-div')
+
+const GameBoard = (function (){
+gameBoard = 
+["", "", "",
+"", "o", "",
+"", "", "x"]
+let render = function (){
+  for(index in gameBoard){
+    gameBoardDiv =  gameBoardDivList[index]
+    gameBoardDiv.textContent = gameBoard[index]
+    gameBoardDiv.classList.add(index)
+  }
 }
 
-
-
-let controlGameState = (function(){
-  gameBoardElement.textContent = ""
-  render()
+let playerClick = function(){
+  let currentValue
+  for(div of gameBoardDivList){
+    div.addEventListener('click', function(){
+      if(this.textContent){}
+      else{
+        if(!currentValue) {currentValue=firstPlayer.symbol}
+        else if(currentValue===firstPlayer.symbol){currentValue=secondPlayer.symbol}
+        else if (currentValue===secondPlayer.symbol){currentValue=firstPlayer.symbol}
+    
+      
+        let classValue = this.classList.value
+        gameBoard.splice(classValue, 1, currentValue)
+        console.log(gameBoard)
+      }      
+      render()
+    })
+  }
+}
+playerClick()
+render()
+return{gameBoard}
 })()
 
 
-// make an Gameboard object to store the values in an Array
-// make a function to render the values from that array to the DOM
-// make a factory for the player 
-// 
+
+let ControlGameFlow = (function(){
+  let callWinner 
+  let checkWin = function(){
+    console.log(this.classList.value)
+    console.log(callWinner)
+    if(callWinner){console.log('already won')}
+    else{
+      
+        if(gameBoard[0]===gameBoard[1]&& gameBoard[1]===gameBoard[2]){
+        callWinner='somebody win'
+        console.log(callWinner)
+        }
+        if(gameBoard[0]===gameBoard[3]&&gameBoard[3]===gameBoard[6]){
+        callWinner='somebody won'
+        console.log(callWinner)
+        }
+      }
+      
+    }  
+    for (div of gameBoardDivList){
+    div.addEventListener('click', checkWin)
+ }
+})()

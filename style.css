@@ -1,11 +1,11 @@
-.gameboard{
+.gameboard-container{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  max-width: 400px;
+  width: 400px;
+  height: 400px;
+
 }
 
-.gameboard div{
+#gameboard-div{
   border: solid;
-  padding: 20px;
-  text-align: center;
 }
