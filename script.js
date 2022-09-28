@@ -10,6 +10,11 @@ let player = function (symbol, name){
 
 const gameBoardContainer = document.querySelector('.gameboard-container')
 const gameBoardDivList = document.querySelectorAll('#gameboard-div')
+const endgameEl = document.querySelector('.endgame-container')
+
+
+
+
 
 const GameBoard = (function (){
   gameBoard = 
@@ -22,6 +27,7 @@ const GameBoard = (function (){
       gameBoardDiv.textContent = gameBoard[index]
       gameBoardDiv.classList.add(index)
     }
+    
   }
 
   let playerClick = function(){
@@ -33,8 +39,8 @@ const GameBoard = (function (){
           if(!currentValue) {currentValue=firstPlayer.symbol}
           else if(currentValue===firstPlayer.symbol){currentValue=secondPlayer.symbol}
           else if (currentValue===secondPlayer.symbol){currentValue=firstPlayer.symbol}
-        
-        
+
+          
           let gameBoardDivClass = this.classList.value
           gameBoard.splice(gameBoardDivClass, 1, currentValue)
           console.log(gameBoard)
@@ -54,10 +60,32 @@ const GameBoard = (function (){
 
 
 let ControlGameFlow = (function(){
-  let callResult
-  let checkWin = function(){
-   // if(callWinner){console.log(callWinner)}
-   // else if (gameBoard[0]){console.log(gameBoard[0])}    
+  let callResult 
+
+  let checkWinner= function(playerName, playerSymbol, baordValueA, baordValueB, boardValueC){     
+    if(gameBoard[baordValueA]===playerSymbol&&gameBoard[baordValueB]===playerSymbol&& gameBoard[boardValueC]===playerSymbol){
+      callResult= `${playerName} won`
+    }           
+  }
+
+
+   let endTheGame = function(){
+    console.log(callResult)
+    if(callResult){
+      
+      setTimeout(function(){
+        gameBoardContainer.textContent=''
+        let congratulatorElDiv=document.createElement('div')
+        let endgameButton = document.createElement('button')        
+        endgameEl.append(congratulatorElDiv, endgameButton)
+        console.log(congratulatorElDiv)
+        congratulatorElDiv.textContent=callResult,endgameButton.textContent='try again'
+      },300) }
+  }    
+
+
+
+  let checkWin = function(){ 
     checkWinner(firstPlayer.name, firstPlayer.symbol, 0,1,2)
     checkWinner(firstPlayer.name, firstPlayer.symbol, 3,4,5)
     checkWinner(firstPlayer.name, firstPlayer.symbol, 6,7,8)  
@@ -74,31 +102,28 @@ let ControlGameFlow = (function(){
     checkWinner(secondPlayer.name, secondPlayer.symbol, 2,5,8)  
     checkWinner(secondPlayer.name, secondPlayer.symbol, 0,4,8)
     checkWinner(secondPlayer.name, secondPlayer.symbol, 2,4,6)    
-    
-  
-    
-
     if(callResult===undefined&&
       gameBoard[0]!=''&&gameBoard[1]!=''&&gameBoard[2]!=''&&
       gameBoard[3]!=''&&gameBoard[4]!=''&&gameBoard[5]!=''&&
       gameBoard[6]!=''&&gameBoard[7]!=''&&gameBoard[8]!=''){
-      callResult='its a tie'
-      setTimeout(function(){alert(callResult)},300) 
+      callResult='its a tie'     
     }
+    endTheGame()
+ 
+    return callResult
   }
-      
-      
-
-    let checkWinner= function(playerName, playerSymbol, baordValueA, baordValueB, boardValueC){     
-      if(gameBoard[baordValueA]===playerSymbol&&gameBoard[baordValueB]===playerSymbol&& gameBoard[boardValueC]===playerSymbol){
-        callResult= `${playerName} won`
-        setTimeout(function(){alert(callResult)},300) 
-      }           
-    }
-
+  
+ 
 
 
     for(div of gameBoardDivList){
       div.addEventListener('click', checkWin)
     }
+
+   endTheGame() 
+    
 })()
+
+
+
+
