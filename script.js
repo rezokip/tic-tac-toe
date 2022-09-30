@@ -26,36 +26,45 @@ const GameBoard = (function (){
       gameBoardDiv =  gameBoardDivList[index]
       gameBoardDiv.textContent = gameBoard[index]
       gameBoardDiv.classList.add(index)
-    }
+    }    
+  }
+
+  let getCurrentValue= function(){
     
   }
 
-  let playerClick = function(){
-    let currentValue
-    for(div of gameBoardDivList){
-      div.addEventListener('click', function(){
-        if(this.textContent){}
-        else{
-          if(!currentValue) {currentValue=firstPlayer.symbol}
-          else if(currentValue===firstPlayer.symbol){currentValue=secondPlayer.symbol}
-          else if (currentValue===secondPlayer.symbol){currentValue=firstPlayer.symbol}
 
-          
-          let gameBoardDivClass = this.classList.value
-          gameBoard.splice(gameBoardDivClass, 1, currentValue)
-          console.log(gameBoard)
-          console.log(gameBoardDivClass)
-          render()
-          console.log(this.textContent)
-        }      
-
-      })
-    }
+  let currentValue
+  let playerClick = function(){  
+    if(this.textContent){}
+    else{
+      if(currentValue===firstPlayer.symbol){currentValue=secondPlayer.symbol}
+      else if (currentValue===secondPlayer.symbol){currentValue=firstPlayer.symbol}
+      else if(!currentValue) {currentValue=firstPlayer.symbol}                   
+      gameBoardDivClass = this.classList.value
+      gameBoard.splice(this.classList.value, 1, currentValue)
+      console.log('currentvalue', currentValue)
+      console.log(gameBoard)
+      console.log(this.classList.value)
+      render() 
+      return currentValue  
+    }      
+    console.log(currentValue, 'currentvalue')  
+    return currentValue
+    
   }
-  playerClick()
+
+  for(div of gameBoardDivList){
+    div.addEventListener('click', playerClick)       
+  }
+  
+  
+  
   render()
-  return{gameBoard}
+  return{gameBoard, render, playerClick}
 })()
+
+
 
 
 
@@ -68,21 +77,34 @@ let ControlGameFlow = (function(){
     }           
   }
 
-
-   let endTheGame = function(){
-    console.log(callResult)
-    if(callResult){
-      
+  let congratulatorElDiv=document.createElement('div')
+  let endgameButton = document.createElement('button') 
+  let endTheGame = function(){
+    if(callResult){           
+      congratulatorElDiv.textContent=callResult,
+      endgameButton.textContent='try again'
       setTimeout(function(){
-        gameBoardContainer.textContent=''
-        let congratulatorElDiv=document.createElement('div')
-        let endgameButton = document.createElement('button')        
-        endgameEl.append(congratulatorElDiv, endgameButton)
-        console.log(congratulatorElDiv)
-        congratulatorElDiv.textContent=callResult,endgameButton.textContent='try again'
-      },300) }
+      gameBoardContainer.textContent            
+      endgameEl.append(congratulatorElDiv, endgameButton)
+      console.log(congratulatorElDiv)        
+      },300)    
+    }
   }    
 
+  let startNewGame = function(){
+    console.log(callResult)
+    callResult=undefined
+    gameBoard = 
+    ["", "", "",
+    "", "", "",
+    "", "", ""]
+    currentValue=undefined
+    GameBoard.render()    
+  }
+
+
+
+  endgameButton.addEventListener('click', startNewGame)
 
 
   let checkWin = function(){ 
@@ -109,7 +131,6 @@ let ControlGameFlow = (function(){
       callResult='its a tie'     
     }
     endTheGame()
- 
     return callResult
   }
   
@@ -117,10 +138,10 @@ let ControlGameFlow = (function(){
 
 
     for(div of gameBoardDivList){
-      div.addEventListener('click', checkWin)
+      div.addEventListener('click', checkWin)     
     }
 
-   endTheGame() 
+return{checkWin}   
     
 })()
 
