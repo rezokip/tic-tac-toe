@@ -4,9 +4,38 @@ let player = function (symbol, name){
   return {symbol, name}
   }
   
-  let firstPlayer = player('x','hans')
-  let secondPlayer = player('o','peter')
-  
+ 
+
+
+const startGameContainer = document.querySelector('.start-game-container')
+const welcomeText= document.querySelector('.welcome-text')
+const startGameButton= document.querySelector('.start-game-button')
+
+let startTheGame = function(){
+  startGameContainer.style.display='none'
+  getPlayersContainer.style.display='block'
+}
+
+startGameButton.addEventListener('click', startTheGame)
+
+const getPlayersContainer = document.querySelector('.get-players-container')
+const firstPlayerName = document.querySelector('#firstPlayerName')
+const secondPlayerName = document.querySelector('#secondPlayerName')
+const startButton = document.querySelector('.start-button')
+
+let createPlayers = function(){
+  if(firstPlayerName.value ===''|| secondPlayerName.value===''){alert('please enter your name first')}  
+  else{
+    firstPlayer = player ('x', firstPlayerName.value)
+    secondPlayer = player ('o', secondPlayerName.value) 
+  } 
+  getPlayersContainer.style.display='none'
+  gameBoardContainer.style.display='grid'
+  return {firstPlayer, secondPlayer}
+}
+
+startButton.addEventListener('click', createPlayers)
+
 
 const gameBoardContainer = document.querySelector('.gameboard-container')
 const gameBoardDivList = document.querySelectorAll('#gameboard-div')
@@ -15,12 +44,20 @@ const endgameEl = document.querySelector('.endgame-container')
 
 
 
+const StartGame = (function(){
+  getPlayersContainer.style.display='none'
+  gameBoardContainer.style.display='none'
+  
+
+})()
+
 
 const GameBoard = (function (){
   gameBoard = 
     ["", "", "",
     "", "", "",
     "", "", ""]
+
   let render = function (){
     for(index in gameBoard){
       gameBoardDiv =  gameBoardDivList[index]
@@ -29,39 +66,39 @@ const GameBoard = (function (){
     }    
   }
 
+  let currentValue
   let getCurrentValue= function(){
-    
+    if(currentValue===firstPlayer.symbol){currentValue=secondPlayer.symbol}
+    else if (currentValue===secondPlayer.symbol){currentValue=firstPlayer.symbol}
+    else if(!currentValue || ControlGameFlow.checkWin()===undefined) {currentValue=firstPlayer.symbol}                   
+    return {currentValue}
   }
 
-
-  let currentValue
-  let playerClick = function(){  
+  let assignPlayerValue = function(){  
     if(this.textContent){}
     else{
-      if(currentValue===firstPlayer.symbol){currentValue=secondPlayer.symbol}
-      else if (currentValue===secondPlayer.symbol){currentValue=firstPlayer.symbol}
-      else if(!currentValue) {currentValue=firstPlayer.symbol}                   
+      getCurrentValue() 
       gameBoardDivClass = this.classList.value
-      gameBoard.splice(this.classList.value, 1, currentValue)
+      gameBoard.splice(gameBoardDivClass, 1, currentValue)
       console.log('currentvalue', currentValue)
       console.log(gameBoard)
       console.log(this.classList.value)
       render() 
-      return currentValue  
+      
     }      
     console.log(currentValue, 'currentvalue')  
-    return currentValue
+   
     
   }
 
   for(div of gameBoardDivList){
-    div.addEventListener('click', playerClick)       
+    div.addEventListener('click', assignPlayerValue)       
   }
   
   
   
   render()
-  return{gameBoard, render, playerClick}
+  return{gameBoard, render, getCurrentValue}
 })()
 
 
@@ -93,12 +130,13 @@ let ControlGameFlow = (function(){
 
   let startNewGame = function(){
     console.log(callResult)
-    callResult=undefined
+    callResult=undefined    
     gameBoard = 
     ["", "", "",
     "", "", "",
     "", "", ""]
-    currentValue=undefined
+
+
     GameBoard.render()    
   }
 
