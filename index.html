@@ -15,13 +15,20 @@
 
   <div class="get-players-container">
       <div>choose your name</div>
-      <label for="firstPlayerName">Player 1</label>
-      <input id='firstPlayerName'type="text">
-      <label for="secondPlayerName">Player 2</label>
-      <input id='secondPlayerName' type="text">
+      <form class="player-form">
+        <div>
+          <label for="firstPlayerName">Player 1</label>
+          <input placeholder='name' id='firstPlayerName'type="text">
+        </div>
+        <div>
+          <label for="secondPlayerName">Player 2</label>
+          <input placeholder="name" id='secondPlayerName' type="text">
+        </div>        
+      </form>
+     
       <button class="start-button">Start</button>
   </div>
-
+  
   <section class="gameboard-container">
     <div id="gameboard-div"></div>
     <div id="gameboard-div"></div>

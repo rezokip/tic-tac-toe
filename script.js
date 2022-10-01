@@ -18,7 +18,7 @@ const endgameEl = document.querySelector('.endgame-container')
 // factory function to create player
 let player = function (symbol, name){
   return {symbol, name}
-  }
+}
   
 
 // At the beginning of the Game Start with a Module 
@@ -48,10 +48,8 @@ const StartGame = (function(){
     return {firstPlayer, secondPlayer, currentPlayer}
   }
 
-  startGameButton.addEventListener('click', startTheGame)
-  
+  startGameButton.addEventListener('click', startTheGame)  
   startButton.addEventListener('click', createPlayers)
-
 })()
 
 
@@ -88,9 +86,6 @@ const GameBoard = (function (){
       currentValue = currentPlayer.symbol
       gameBoardDivClass = this.classList.value
       gameBoard.splice(gameBoardDivClass, 1, currentValue)
-      console.log('currentvalue', currentValue)
-      console.log(gameBoard)
-      console.log(this.classList.value)
       changeCurrentPlayer()
       render()       
     }            
@@ -114,12 +109,11 @@ const GameBoard = (function (){
     // after the game ends display the result and a button to try again
     // listen to the button to reset important values, render and display a fresh board
 
-let ControlGameFlow = (function(){
-
+let ControlGameFlow = (function(){  
   let callResult 
   let checkWinner= function(playerName, playerSymbol, baordValueA, baordValueB, boardValueC){     
     if(gameBoard[baordValueA]===playerSymbol&&gameBoard[baordValueB]===playerSymbol&& gameBoard[boardValueC]===playerSymbol){
-      callResult= `${playerName} won`
+      callResult= `${playerName} wins`
     }           
   }
 
@@ -153,12 +147,12 @@ let ControlGameFlow = (function(){
     checkWinner(secondPlayer.name, secondPlayer.symbol, 1,4,7)
     checkWinner(secondPlayer.name, secondPlayer.symbol, 2,5,8)  
     checkWinner(secondPlayer.name, secondPlayer.symbol, 0,4,8)
-    checkWinner(secondPlayer.name, secondPlayer.symbol, 2,4,6)    
+    checkWinner(secondPlayer.name, secondPlayer.symbol, 2,4,6)      
     if(callResult===undefined&&
       gameBoard[0]!=''&&gameBoard[1]!=''&&gameBoard[2]!=''&&
       gameBoard[3]!=''&&gameBoard[4]!=''&&gameBoard[5]!=''&&
       gameBoard[6]!=''&&gameBoard[7]!=''&&gameBoard[8]!=''){
-      callResult='its a tie'     
+      callResult='Tie'     
     }
     endTheGame()
     return callResult
@@ -179,7 +173,6 @@ let ControlGameFlow = (function(){
     "", "", ""]   
     callResult=undefined  
     endgameEl.textContent=''
-    console.log(callResult)
     GameBoard.render()    
   }
 
